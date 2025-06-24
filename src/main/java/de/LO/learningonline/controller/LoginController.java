@@ -1,5 +1,6 @@
 package de.LO.learningonline.controller;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -7,12 +8,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class LoginController {
     @GetMapping("/login")
     public String login() {
-        return "login";  // Thymeleaf rendert login.html
+        return "login";
     }
 
-    @GetMapping("/dashboard")
-    public String dashboard() {
-        // hier je nach Rolle auf verschiedene Views weiterleiten:
-        return "dashboard";
+    @GetMapping("/postLogin")
+    public String redirectByRole(Authentication auth) {
+        boolean isDozent = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_DOZENT"));
+        return isDozent
+                ? "redirect:/dozent/dashboard"
+                : "redirect:/student/dashboard";
     }
 }
+
