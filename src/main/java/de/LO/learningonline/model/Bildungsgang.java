@@ -19,7 +19,7 @@ public class Bildungsgang {
     @Column(name = "FACHBEREICH", nullable = false, length = 100)
     private String fachbereich;
 
-    @Column(name = "REGELSTUDIENGZEIT", nullable = false)
+    @Column(name = "REGELSTUDIENZEIT", nullable = false)
     private Integer regelstudienzeit;
 
     @Column(name = "AKADEMISCHER_ABSCHLUSS", nullable = false, length = 80)

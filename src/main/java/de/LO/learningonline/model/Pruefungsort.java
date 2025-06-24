@@ -2,6 +2,9 @@ package de.LO.learningonline.model;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table(name = "PRUEFUNGSORT")
 public class Pruefungsort {
@@ -24,6 +27,14 @@ public class Pruefungsort {
 
     @Column(name = "SITZPLAETZE", nullable = false)
     private Integer sitzplaetze;
+
+    @ManyToMany
+    @JoinTable(
+            name = "PRUEFT",
+            joinColumns = @JoinColumn(name = "PRUEFUNGSORT_ID"),
+            inverseJoinColumns = @JoinColumn(name = "PRUEFER_ID")
+    )
+    private Set<Pruefer> pruefer = new HashSet<>();
 
     public Pruefungsort() {
     }

@@ -10,10 +10,12 @@ public class LoginController {
     public String login() {
         return "login";
     }
-    @GetMapping("/dashboard")
+
+    @GetMapping("/postLogin")
     public String redirectByRole(Authentication auth) {
-        return auth.getAuthorities().stream()
-                .anyMatch(a -> a.getAuthority().equals("ROLE_DOZENT"))
+        boolean isDozent = auth.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_DOZENT"));
+        return isDozent
                 ? "redirect:/dozent/dashboard"
                 : "redirect:/student/dashboard";
     }
