@@ -30,11 +30,11 @@ public class Student {
     @Column(name = "ERRIECHTEETCS", nullable = false)
     private Integer erreichteEtcs;
 
-    @Column(name = "ZUGELASSEN", length = 1)
+    @Column(name = "ZUGELASSEN", columnDefinition = "CHAR(1)", nullable = true)
     private String zugelassen;
 
     // --- neu: Login-Felder ---
-    @Column(name = "PASSWORT", nullable = false, length = 100)
+    @Column(name = "PASSWORT", nullable = true, length = 100)
     private String passwort;
 
     // --- Konstruktoren ---
