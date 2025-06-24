@@ -1,0 +1,40 @@
+<!-- src/main/resources/templates/student/form.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${student.matrikelnr} == null ? 'Neuer Student' : 'Student bearbeiten'"></title>
+</head>
+<body>
+<h1 th:text="${student.matrikelnr} == null ? 'Neuer Student' : 'Student bearbeiten'"></h1>
+<form th:action="@{/student/save}" th:object="${student}" method="post">
+    <input type="hidden" th:field="*{matrikelnr}" />
+
+    <label for="email">E-Mail:</label>
+    <input id="email" th:field="*{email}" />
+    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+
+    <label for="vorname">Vorname:</label>
+    <input id="vorname" th:field="*{vorname}" />
+    <div th:if="${#fields.hasErrors('vorname')}" th:errors="*{vorname}"></div>
+
+    <label for="name">Name:</label>
+    <input id="name" th:field="*{name}" />
+    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+
+    <label for="studienbeginn">Studienbeginn:</label>
+    <input id="studienbeginn" type="date" th:field="*{studienbeginn}" />
+    <div th:if="${#fields.hasErrors('studienbeginn')}" th:errors="*{studienbeginn}"></div>
+
+    <label for="erreichteEtcs">Erreichte ECTS:</label>
+    <input id="erreichteEtcs" type="number" th:field="*{erreichteEtcs}" />
+    <div th:if="${#fields.hasErrors('erreichteEtcs')}" th:errors="*{erreichteEtcs}"></div>
+
+    <label for="zugelassen">Zugelassen:</label>
+    <input id="zugelassen" type="checkbox" th:field="*{zugelassen}" />
+    <div th:if="${#fields.hasErrors('zugelassen')}" th:errors="*{zugelassen}"></div>
+
+    <button type="submit">Speichern</button>
+</form>
+</body>
+</html>

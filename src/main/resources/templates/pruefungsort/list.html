@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Prüfungsorte</title></head>
+<body>
+<h1>Alle Prüfungsorte</h1>
+<a th:href="@{/pruefungsort/new}">Neuen Ort anlegen</a>
+<table>
+  <tr><th>ID</th><th>Stadt</th><th>PLZ</th><th>Aktionen</th></tr>
+  <tr th:each="ort : ${orte}">
+    <td th:text="${ort.id}">1</td>
+    <td th:text="${ort.stadt}">Musterstadt</td>
+    <td th:text="${ort.plz}">12345</td>
+    <td>
+      <a th:href="@{'/pruefungsort/' + ${ort.id} + '/edit'}">✎</a>
+      <form th:action="@{'/pruefungsort/' + ${ort.id} + '/delete'}" method="post" style="display:inline">
+        <button type="submit">✖</button>
+      </form>
+    </td>
+  </tr>
+</table>
+</body>
+</html>

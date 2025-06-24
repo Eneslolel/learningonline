@@ -126,7 +126,7 @@ public class Student {
         return passwort;
     }
 
-    public void setPassword(String passwort) {
+    public void setPasswort(String passwort) {
         this.passwort = passwort;
     }
 }

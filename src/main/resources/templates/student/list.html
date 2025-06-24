@@ -1,0 +1,26 @@
+<!-- src/main/resources/templates/student/list.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Alle Studenten</title></head>
+<body>
+<h1>Alle Studenten</h1>
+<a th:href="@{/student/new}">+ Neuer Student</a>
+<table border="1">
+    <tr>
+        <th>ID</th><th>Email</th><th>Vorname</th><th>Name</th><th>Aktionen</th>
+    </tr>
+    <tr th:each="s : ${students}">
+        <td th:text="${s.matrikelnr}"></td>
+        <td th:text="${s.email}"></td>
+        <td th:text="${s.vorname}"></td>
+        <td th:text="${s.name}"></td>
+        <td>
+            <a th:href="@{|/student/edit/${s.matrikelnr}|}">Bearbeiten</a>
+            |
+            <a th:href="@{|/student/delete/${s.matrikelnr}|}"
+               onclick="return confirm('Wirklich löschen?');">Löschen</a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
