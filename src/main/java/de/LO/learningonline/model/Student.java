@@ -34,11 +34,8 @@ public class Student {
     private String zugelassen;
 
     // --- neu: Login-Felder ---
-//    @Column(name = "USERNAME", nullable = false, unique = true, length = 100)
-//    private String username;
-//
-//    @Column(name = "PASSWORD", nullable = false, length = 255)
-//    private String password;
+    @Column(name = "PASSWORT", nullable = false, length = 100)
+    private String passwort;
 
     // --- Konstruktoren ---
 
@@ -47,9 +44,7 @@ public class Student {
 
     public Student(Long matrikelnr, Long studienortId, String email,
                    String vorname, String name, Date studienbeginn,
-                   Integer erreichteEtcs, String zugelassen
-//                   String username, String password
-    ) {
+                   Integer erreichteEtcs, String zugelassen, String passwort) {
         this.matrikelnr     = matrikelnr;
         this.studienortId   = studienortId;
         this.email          = email;
@@ -58,8 +53,7 @@ public class Student {
         this.studienbeginn  = studienbeginn;
         this.erreichteEtcs  = erreichteEtcs;
         this.zugelassen     = zugelassen;
-//        this.username       = username;
-//        this.password       = password;
+        this.passwort       = passwort;
     }
 
     // --- Getter / Setter ---
@@ -128,20 +122,12 @@ public class Student {
         this.zugelassen = zugelassen;
     }
 
-//    public String getUsername() {
-//        return username;
-//    }
-//
-//    public void setUsername(String username) {
-//        this.username = username;
-//    }
-//
-//    public String getPassword() {
-//        return password;
-//    }
-//
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
+    public String getPasswort() {
+        return passwort;
+    }
+
+    public void setPassword(String passwort) {
+        this.passwort = passwort;
+    }
 }
 
