@@ -23,7 +23,14 @@ public class PruefungsortService {
                     ((Number) r[0]).longValue(),
                     (String) r[1],
                     (String) r[2],
-                    (r[3] != null) ? ((java.sql.Date) r[3]).toLocalDate() : null,
+                    (r[3] != null)
+                            ? ((r[3] instanceof java.sql.Timestamp)
+                            ? ((java.sql.Timestamp) r[3]).toLocalDateTime().toLocalDate()
+                            : ((r[3] instanceof java.sql.Date)
+                            ? ((java.sql.Date) r[3]).toLocalDate()
+                            : null)
+                    )
+                            : null,
                     ((Number) r[4]).intValue(),
                     ((Number) r[5]).intValue(),
                     ((Number) r[6]).intValue()
