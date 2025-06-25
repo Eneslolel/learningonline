@@ -2,8 +2,18 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Prüfungsorte suchen</title>
+    <style>
+        .success { color: green; }
+        .error { color: red; }
+        table, th, td { border: 1px solid #888; border-collapse: collapse; padding: 6px; }
+    </style>
 </head>
 <body>
+<!-- Feedback-Meldung -->
+<div th:if="${message}">
+    <span th:text="${message}" th:classappend="${success} ? 'success' : 'error'"></span>
+</div>
+
 <h1>Prüfungsorte suchen</h1>
 <form method="get" th:action="@{/pruefungsorte}">
     <label>Modul:
@@ -31,6 +41,7 @@
         <th>Sitzplätze gesamt</th>
         <th>Belegte Plätze</th>
         <th>Freie Plätze</th>
+        <th>Aktion</th>
     </tr>
     <tr th:each="o : ${orte}">
         <td th:text="${o.pruefungsortId}"></td>
@@ -40,6 +51,16 @@
         <td th:text="${o.sitzplaetze}"></td>
         <td th:text="${o.belegtePlaetze}"></td>
         <td th:text="${o.freiePlaetze}"></td>
+        <td>
+            <form th:action="@{/pruefungsorte/anmelden}" method="post" style="margin:0;">
+                <input type="hidden" name="pruefungsortId" th:value="${o.pruefungsortId}" />
+                <input type="hidden" name="datum" th:value="${o.datum}" />
+                <button type="submit">Anmelden</button>
+            </form>
+        </td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(orte)}">
+        <td colspan="8">Keine Ergebnisse gefunden.</td>
     </tr>
 </table>
 </body>
