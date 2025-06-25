@@ -1,16 +1,41 @@
+<!-- src/main/resources/templates/student/student-dashboard.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Dozent-Dashboard</title></head>
+<head><title>Dozent Dashboard</title></head>
 <body>
-<h1>Willkommen, <span th:text="${dozent.vorname}">Name</span></h1>
-<table>
-  <thead><tr><th>Prüfungsort-ID</th><th>Stadt</th></tr></thead>
-  <tbody th:each="ort : ${orte}">
+<h1>Prüfungsorte suchen</h1>
+
+<form th:action="@{/dozent/dashboard}" method="get">
+  <input type="text" name="ort" placeholder="Ort" th:value="${ort}">
+  <input type="text" name="studiengang" placeholder="Studiengang" th:value="${studiengang}">
+  <input type="date" name="datum" th:value="${datum}">
+  <button type="submit">Suchen</button>
+</form>
+<!-- hier kommt später die Tabelle -->
+<h2>Ergebnisse</h2>
+<table border="1">
   <tr>
-    <td th:text="${ort.id}">ID</td>
-    <td th:text="${ort.stadt}">Stadt</td>
+    <th>Adresse</th>
+    <th>Datum</th>
+    <th>Freie Stud.-Plätze</th>
+    <th>Freie Dozent-Plätze</th>
+    <th>Entfernung (km)</th>
+    <th>Anmelden</th>
   </tr>
-  </tbody>
+  <tr th:each="ort : ${orte}">
+    <td th:text="${ort.adresse}"></td>
+    <td th:text="${#dates.format(ort.datum,'dd.MM.yyyy')}"></td>
+    <td th:text="${ort.freieStudentenPlaetze}"></td>
+    <td th:text="${ort.freieDozentenPlaetze}"></td>
+    <td th:text="${ort.entfernung}"></td>
+    <td>
+      <form th:action="@{/dozent/anmelden}" method="post" th:if="${#authorization.expression('hasRole(''DOZENT'')')}">
+        <input type="hidden" name="ortId" th:value="${ort.id}"/>
+        <button type="submit">Doz. anmelden</button>
+      </form>
+    </td>
+  </tr>
 </table>
+
 </body>
 </html>
