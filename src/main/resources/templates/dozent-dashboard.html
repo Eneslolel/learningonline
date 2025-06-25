@@ -3,6 +3,7 @@
 <head><title>Dozent-Dashboard</title></head>
 <body>
 <h1>Willkommen, <span th:text="${dozent.vorname}">Name</span></h1>
+<a href="/pruefungsorte">Prüfungsorte suchen & filtern</a>
 <table>
   <thead><tr><th>Prüfungsort-ID</th><th>Stadt</th></tr></thead>
   <tbody th:each="ort : ${orte}">
