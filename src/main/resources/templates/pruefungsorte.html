@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Prüfungsorte suchen</title>
+</head>
+<body>
+<h1>Prüfungsorte suchen</h1>
+<form method="get" th:action="@{/pruefungsorte}">
+    <label>Modul:
+        <select name="modulId">
+            <option value="">Alle</option>
+            <option th:each="m : ${module}" th:value="${m.id}" th:text="${m.fach}"></option>
+        </select>
+    </label>
+    <label>Ort:
+        <input type="text" name="ort" th:value="${param.ort}" />
+    </label>
+    <label>Datum:
+        <input type="date" name="datum" th:value="${param.datum}" />
+    </label>
+    <button type="submit">Suchen</button>
+</form>
+
+<h2>Ergebnisse</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Stadt</th>
+        <th>Adresse</th>
+        <th>Datum</th>
+        <th>Sitzplätze gesamt</th>
+        <th>Belegte Plätze</th>
+        <th>Freie Plätze</th>
+    </tr>
+    <tr th:each="o : ${orte}">
+        <td th:text="${o.pruefungsortId}"></td>
+        <td th:text="${o.stadt}"></td>
+        <td th:text="${o.adresse}"></td>
+        <td th:text="${o.datum}"></td>
+        <td th:text="${o.sitzplaetze}"></td>
+        <td th:text="${o.belegtePlaetze}"></td>
+        <td th:text="${o.freiePlaetze}"></td>
+    </tr>
+</table>
+</body>
+</html>
