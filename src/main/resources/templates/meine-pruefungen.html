@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Meine Prüfungen</title>
+    <style>
+        table, th, td { border: 1px solid #888; border-collapse: collapse; padding: 6px; }
+        .zugelassen { color: green; }
+        .nicht-zugelassen { color: red; }
+    </style>
+</head>
+<body>
+<h1>Meine Prüfungen & Zulassungen</h1>
+<table>
+    <tr>
+        <th>Prüfung</th>
+        <th>Datum</th>
+        <th>Ort</th>
+        <th>Status</th>
+    </tr>
+    <tr th:each="a : ${anmeldungen}">
+        <td th:text="${a.pruefungId}"></td>
+        <!-- Ergänze hier: Prüfung suchen, z.B. mit Map oder Service (siehe unten) -->
+        <td>
+            <span th:text="${@pruefungService.getDatumById(a.pruefungId)}"></span>
+        </td>
+        <td>
+            <span th:text="${@pruefungService.getOrtByPruefungId(a.pruefungId)}"></span>
+        </td>
+        <td>
+            <span th:if="${a.zugelassen == 'Y'}" class="zugelassen">Zugelassen</span>
+            <span th:if="${a.zugelassen == 'N'}" class="nicht-zugelassen">Nicht zugelassen</span>
+        </td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(anmeldungen)}">
+        <td colspan="4">Keine Anmeldungen gefunden.</td>
+    </tr>
+</table>
+</body>
+</html>

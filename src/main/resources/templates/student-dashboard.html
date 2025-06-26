@@ -4,6 +4,11 @@
 <body>
 <h1>Willkommen, <span th:text="${student.vorname}">Name</span></h1>
 <a href="/pruefungsorte">Prüfungsorte suchen & filtern</a>
+<p>
+    <a href="/student/meine-pruefungen" style="padding:5px 10px; border:1px solid #888; border-radius:4px; background:#eee; text-decoration:none;">
+        Meine Prüfungen &amp; Zulassungen
+    </a>
+</p>
 <table>
     <thead><tr><th>Ort</th><th>Stadt</th></tr></thead>
     <tbody th:each="ort : ${orte}">

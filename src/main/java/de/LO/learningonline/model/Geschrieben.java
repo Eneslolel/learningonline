@@ -33,8 +33,6 @@ public class Geschrieben implements Serializable {
         this.zugelassen = zugelassen;
     }
 
-    // Getter/Setter ...
-
     // Composite Primary Key Klasse
     public static class PK implements Serializable {
         private Long studentMatrikelnr;
@@ -46,6 +44,7 @@ public class Geschrieben implements Serializable {
             this.pruefungId = pruefungId;
         }
 
+        // Get/Set Methoden
         public Long getStudentMatrikelnr() {
             return studentMatrikelnr;
         }
@@ -76,4 +75,38 @@ public class Geschrieben implements Serializable {
             return studentMatrikelnr.hashCode() + pruefungId.hashCode();
         }
     }
+    // Getter/Setter für Entity-Felder (ganz unten einfügen!)
+
+    public Long getStudentMatrikelnr() {
+        return studentMatrikelnr;
+    }
+
+    public void setStudentMatrikelnr(Long studentMatrikelnr) {
+        this.studentMatrikelnr = studentMatrikelnr;
+    }
+
+    public Long getPruefungId() {
+        return pruefungId;
+    }
+
+    public void setPruefungId(Long pruefungId) {
+        this.pruefungId = pruefungId;
+    }
+
+    public java.math.BigDecimal getBenotung() {
+        return benotung;
+    }
+
+    public void setBenotung(java.math.BigDecimal benotung) {
+        this.benotung = benotung;
+    }
+
+    public String getZugelassen() {
+        return zugelassen;
+    }
+
+    public void setZugelassen(String zugelassen) {
+        this.zugelassen = zugelassen;
+    }
+
 }
