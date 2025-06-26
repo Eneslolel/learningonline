@@ -9,4 +9,6 @@ public interface GeschriebenRepository extends JpaRepository<Geschrieben, Long> 
     boolean existsByStudentMatrikelnrAndPruefungId(Long studentMatrikelnr, Long pruefungId);
     boolean existsByStudentMatrikelnrAndPruefungIdAndZugelassen(Long studentMatrikelnr, Long pruefungId, String zugelassen);
     List<Geschrieben> findByStudentMatrikelnr(Long studentMatrikelnr);
+    void deleteByStudentMatrikelnrAndPruefungId(Long studentMatrikelnr, Long pruefungId);
+
 }

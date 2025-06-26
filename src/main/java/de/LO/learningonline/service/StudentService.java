@@ -9,6 +9,7 @@ import de.LO.learningonline.repository.ModulRepository;
 import de.LO.learningonline.repository.PruefungRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,5 +50,9 @@ public class StudentService {
 
         }
         return result;
+    }
+    @Transactional
+    public void abmeldenVonPruefung(Long matrikelnr, Long pruefungId) {
+        geschriebenRepo.deleteByStudentMatrikelnrAndPruefungId(matrikelnr, pruefungId);
     }
 }

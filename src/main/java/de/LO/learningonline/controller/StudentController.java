@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -53,5 +55,12 @@ public class StudentController {
         // oder per DTO aggregieren (können wir gern zusammen bauen)
 
         return "meine-pruefungen";
+    }
+    @PostMapping("/student/abmelden")
+    public String abmelden(@AuthenticationPrincipal UserDetails user, @RequestParam Long pruefungId) {
+        // Student aus DB holen
+        var student = studentRepo.findByEmail(user.getUsername()).orElseThrow();
+        studentService.abmeldenVonPruefung(student.getMatrikelnr(), pruefungId);
+        return "redirect:/student/meine-pruefungen";
     }
 }
