@@ -18,7 +18,7 @@
         <th>Status</th>
     </tr>
     <tr th:each="a : ${anmeldungen}">
-        <td th:text="${a.pruefungId}"></td>
+        <td th:text="${a.modulName}"></td>
         <!-- Ergänze hier: Prüfung suchen, z.B. mit Map oder Service (siehe unten) -->
         <td>
             <span th:text="${@pruefungService.getDatumById(a.pruefungId)}"></span>
