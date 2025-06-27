@@ -1,22 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Student-Dashboard</title></head>
+<head>
+    <title>Student-Dashboard</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/style.css">
+</head>
 <body>
-<h1>Willkommen, <span th:text="${student.vorname}">Name</span></h1>
-<a href="/pruefungsorte">Prüfungsorte suchen & filtern</a>
-<p>
-    <a href="/student/meine-pruefungen" style="padding:5px 10px; border:1px solid #888; border-radius:4px; background:#eee; text-decoration:none;">
-        Meine Prüfungen &amp; Zulassungen
-    </a>
-</p>
-<table>
-    <thead><tr><th>Ort</th><th>Stadt</th></tr></thead>
-    <tbody th:each="ort : ${orte}">
-    <tr>
-        <td th:text="${ort.adresse}">Adresse</td>
-        <td th:text="${ort.stadt}">Stadt</td>
-    </tr>
-    </tbody>
-</table>
+<div class="container">
+    <h1>Willkommen, <span th:text="${student.vorname}">Name</span></h1>
+
+    <nav class="nav">
+        <a class="nav-link" href="/pruefungsorte">Prüfungsorte suchen &amp; filtern</a>
+        <a class="nav-link" href="/student/meine-pruefungen">Meine Prüfungen &amp; Zulassungen</a>
+    </nav>
+
+    <h2 class="mt-3">Meine Prüfungsorte</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Ort</th>
+            <th>Stadt</th>
+        </tr>
+        </thead>
+        <tbody th:each="ort : ${orte}">
+        <tr>
+            <td th:text="${ort.adresse}">Adresse</td>
+            <td th:text="${ort.stadt}">Stadt</td>
+        </tr>
+        </tbody>
+        <tr th:if="${#lists.isEmpty(orte)}">
+            <td colspan="2">Keine Prüfungsorte gefunden.</td>
+        </tr>
+    </table>
+</div>
 </body>
 </html>

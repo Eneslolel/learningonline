@@ -1,45 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Meine Prüfungen</title>
-    <style>
-        table, th, td { border: 1px solid #888; border-collapse: collapse; padding: 6px; }
-        .zugelassen { color: green; }
-        .nicht-zugelassen { color: red; }
-    </style>
+    <meta charset="UTF-8">
+    <title>Meine Prüfungen & Zulassungen</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-<h1>Meine Prüfungen & Zulassungen</h1>
-<table>
-    <tr>
-        <th>Prüfung</th>
-        <th>Datum</th>
-        <th>Ort</th>
-        <th>Status</th>
-        <th>Aktion</th>
-    </tr>
-    <tr th:each="a : ${anmeldungen}">
-        <td th:text="${a.modulName}"></td>
-        <td>
-            <span th:text="${@pruefungService.getDatumById(a.pruefungId)}"></span>
-        </td>
-        <td>
-            <span th:text="${@pruefungService.getOrtByPruefungId(a.pruefungId)}"></span>
-        </td>
-        <td>
-            <span th:if="${a.zugelassen == 'Y'}" class="zugelassen">Zugelassen</span>
-            <span th:if="${a.zugelassen == 'N'}" class="nicht-zugelassen">Nicht zugelassen</span>
-        </td>
-        <td>
-            <form th:action="@{/student/abmelden}" method="post" style="margin:0;">
-                <input type="hidden" name="pruefungId" th:value="${a.pruefungId}" />
-                <button type="submit" th:disabled="${a.zugelassen != 'Y'}">Abmelden</button>
-            </form>
-        </td>
-    </tr>
-    <tr th:if="${#lists.isEmpty(anmeldungen)}">
-        <td colspan="5">Keine Anmeldungen gefunden.</td>
-    </tr>
-</table>
+<div class="container">
+    <h1>Meine Prüfungen &amp; Zulassungen</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Prüfung</th>
+            <th>Datum</th>
+            <th>Ort</th>
+            <th>Status</th>
+            <th>Aktion</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="a : ${anmeldungen}">
+            <td th:text="${a.modulName}"></td>
+            <td>
+                <span th:text="${@pruefungService.getDatumById(a.pruefungId)}"></span>
+            </td>
+            <td>
+                <span th:text="${@pruefungService.getOrtByPruefungId(a.pruefungId)}"></span>
+            </td>
+            <td>
+                <span th:if="${a.zugelassen == 'Y'}" class="zugelassen">Zugelassen</span>
+                <span th:if="${a.zugelassen == 'N'}" class="nicht-zugelassen">Nicht zugelassen</span>
+            </td>
+            <td>
+                <form th:action="@{/student/abmelden}" method="post" style="margin:0;">
+                    <input type="hidden" name="pruefungId" th:value="${a.pruefungId}" />
+                    <button type="submit" th:disabled="${a.zugelassen != 'Y'}">Abmelden</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(anmeldungen)}">
+            <td colspan="5" style="text-align:center;">Keine Anmeldungen gefunden.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

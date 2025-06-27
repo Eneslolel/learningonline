@@ -1,29 +1,37 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Meine Aufsichtsprüfungen</title>
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-<h1>Meine Aufsichtsprüfungen</h1>
-<table>
-    <tr>
-        <th>Ort</th>
-        <th>Stadt</th>
-        <th>Aktion</th>
-    </tr>
-    <tr th:each="o : ${orte}">
-        <td th:text="${o.adresse}"></td>
-        <td th:text="${o.stadt}"></td>
-        <td>
-            <form th:action="@{/pruefer/abmelden}" method="post" style="margin:0;">
-                <input type="hidden" name="pruefungsortId" th:value="${o.id}" />
-                <button type="submit">Abmelden</button>
-            </form>
-        </td>
-    </tr>
-    <tr th:if="${#lists.isEmpty(orte)}">
-        <td colspan="3">Keine Aufsichtsprüfungen angemeldet.</td>
-    </tr>
-</table>
+<div class="container">
+    <h1>Meine Aufsichtsprüfungen</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Prüfungsort</th>
+            <th>Stadt</th>
+            <th>Aktion</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="o : ${orte}">
+            <td th:text="${o.adresse}"></td>
+            <td th:text="${o.stadt}"></td>
+            <td>
+                <form th:action="@{/pruefer/abmelden}" method="post" style="margin:0;">
+                    <input type="hidden" name="pruefungsortId" th:value="${o.id}" />
+                    <button type="submit">Abmelden</button>
+                </form>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(orte)}">
+            <td colspan="3" style="text-align:center;">Keine Aufsichtsprüfungen angemeldet.</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
 </body>
 </html>

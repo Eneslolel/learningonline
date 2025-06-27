@@ -1,20 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><meta charset="UTF-8"><title>Anmelden</title></head>
+<head>
+  <meta charset="UTF-8">
+  <title>Anmelden</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
 <body>
-<h1>Anmelden</h1>
-
-<div th:if="${param.error}">
-  <p style="color:red">E-Mail oder Passwort ungültig.</p>
+<div class="container" style="max-width:400px;margin:60px auto;background:#f8f9fa;padding:30px;border-radius:10px;box-shadow:0 2px 8px #ddd;">
+  <h1 style="text-align:center;margin-bottom:30px;">Login</h1>
+  <div th:if="${param.error}">
+    <p style="color:red;text-align:center;margin-bottom:15px;">E-Mail oder Passwort ungültig.</p>
+  </div>
+  <form th:action="@{/login}" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <div class="form-group" style="margin-bottom:18px;">
+      <label>E-Mail:</label><br>
+      <input type="text" name="username" class="form-control" style="width:100%;padding:8px;border-radius:5px;border:1px solid #ccc;" />
+    </div>
+    <div class="form-group" style="margin-bottom:18px;">
+      <label>Passwort:</label><br>
+      <input type="password" name="password" class="form-control" style="width:100%;padding:8px;border-radius:5px;border:1px solid #ccc;" />
+    </div>
+    <div style="text-align:center;">
+      <button type="submit" style="padding:8px 30px;border-radius:5px;background:#2878c7;color:#fff;border:none;cursor:pointer;">Login</button>
+    </div>
+  </form>
 </div>
-
-<form th:action="@{/login}" method="post">
-  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-  <label>E-Mail:</label>
-  <input type="text" name="username" /><br/>
-  <label>Passwort:</label>
-  <input type="password" name="password" /><br/>
-  <button type="submit">Login</button>
-</form>
 </body>
 </html>

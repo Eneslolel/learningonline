@@ -1,0 +1,108 @@
+body {
+    background: #f8f9fa;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 30px auto;
+    background: #fff;
+    border-radius: 12px;
+    padding: 32px 24px 24px 24px;
+    box-shadow: 0 8px 24px #0002;
+}
+
+h1, h2 {
+    color: #1852a7;
+    font-weight: 600;
+    margin-bottom: 18px;
+}
+
+label {
+    font-weight: 500;
+    margin-right: 8px;
+}
+
+form {
+    margin-bottom: 28px;
+}
+
+input, select, button {
+    padding: 7px 14px;
+    border: 1px solid #b6c2d3;
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-right: 8px;
+}
+
+input[type="date"] {
+    min-width: 150px;
+}
+
+button, .btn {
+    background: #1852a7;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background 0.17s;
+    font-weight: 500;
+}
+
+button:hover, .btn:hover {
+    background: #10346b;
+}
+
+.success {
+    color: #29a550;
+    font-weight: 500;
+}
+
+.error {
+    color: #b61836;
+    font-weight: 500;
+}
+
+.table {
+    width: 100%;
+    margin-top: 14px;
+    border-collapse: collapse;
+    background: #fff;
+}
+
+.table th, .table td {
+    padding: 10px 12px;
+    border-bottom: 1.5px solid #d2d7de;
+    text-align: left;
+}
+
+.table th {
+    background: #1852a7;
+    color: white;
+    font-size: 1.05em;
+    font-weight: 600;
+}
+
+.table tr:nth-child(even) {
+    background: #f3f5fa;
+}
+
+.table tr:hover {
+    background: #e9f0ff;
+}
+
+.table td:last-child {
+    text-align: center;
+}
+
+span.text-secondary {
+    color: #999;
+    font-size: 0.99em;
+}
+
+@media (max-width: 850px) {
+    .container { padding: 8px 2px; }
+    .table th, .table td { padding: 6px 5px; font-size: 0.98em; }
+    h1 { font-size: 1.6em; }
+}

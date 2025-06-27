@@ -2,69 +2,75 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Prüfungsorte suchen</title>
-    <style>
-        .success { color: green; }
-        .error { color: red; }
-        table, th, td { border: 1px solid #888; border-collapse: collapse; padding: 6px; }
-    </style>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-<!-- Feedback-Meldung -->
-<div th:if="${message}">
-    <span th:text="${message}" th:classappend="${success} ? 'success' : 'error'"></span>
+<div class="container">
+    <!-- Feedback-Meldung -->
+    <div th:if="${message}">
+        <span th:text="${message}" th:classappend="${success} ? 'success' : 'error'"></span>
+    </div>
+
+    <h1>Prüfungsorte suchen</h1>
+    <form class="form-inline" method="get" th:action="@{/pruefungsorte}">
+        <label>
+            Modul:
+            <select name="modulId">
+                <option value="">Alle</option>
+                <option th:each="m : ${module}" th:value="${m.id}" th:text="${m.fach}"></option>
+            </select>
+        </label>
+        <label>
+            Ort:
+            <input type="text" name="ort" th:value="${param.ort}" />
+        </label>
+        <label>
+            Datum:
+            <input type="date" name="datum" th:value="${param.datum}" />
+        </label>
+        <button type="submit">Suchen</button>
+    </form>
+
+    <h2 class="mt-3">Ergebnisse</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Stadt</th>
+            <th>Adresse</th>
+            <th>Datum</th>
+            <th>Modul</th>
+            <th>Sitzplätze gesamt</th>
+            <th>Belegte Plätze</th>
+            <th>Freie Plätze</th>
+            <th>Aktion</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="o : ${orte}">
+            <td th:text="${o.pruefungsortId}"></td>
+            <td th:text="${o.stadt}"></td>
+            <td th:text="${o.adresse}"></td>
+            <td th:text="${o.datum}"></td>
+            <td th:text="${o.modulFach}"></td>
+            <td th:text="${o.sitzplaetze}"></td>
+            <td th:text="${o.belegtePlaetze}"></td>
+            <td th:text="${o.freiePlaetze}"></td>
+            <td>
+                <form th:if="${o.anmeldbar}" th:action="@{/pruefungsorte/anmelden}" method="post" style="margin:0;">
+                    <input type="hidden" name="pruefungsortId" th:value="${o.pruefungsortId}" />
+                    <input type="hidden" name="datum" th:value="${o.datum}" />
+                    <button type="submit">Anmelden</button>
+                </form>
+                <span th:unless="${o.anmeldbar}" style="color:gray;">Nicht zugelassen oder bereits angemeldet</span>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(orte)}">
+            <td colspan="9">Keine Ergebnisse gefunden.</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-
-<h1>Prüfungsorte suchen</h1>
-<form method="get" th:action="@{/pruefungsorte}">
-    <label>Modul:
-        <select name="modulId">
-            <option value="">Alle</option>
-            <option th:each="m : ${module}" th:value="${m.id}" th:text="${m.fach}"></option>
-        </select>
-    </label>
-    <label>Ort:
-        <input type="text" name="ort" th:value="${param.ort}" />
-    </label>
-    <label>Datum:
-        <input type="date" name="datum" th:value="${param.datum}" />
-    </label>
-    <button type="submit">Suchen</button>
-</form>
-
-<h2>Ergebnisse</h2>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Stadt</th>
-        <th>Adresse</th>
-        <th>Datum</th>
-        <th>Modul</th>
-        <th>Sitzplätze gesamt</th>
-        <th>Belegte Plätze</th>
-        <th>Freie Plätze</th>
-        <th>Aktion</th>
-    </tr>
-    <tr th:each="o : ${orte}">
-        <td th:text="${o.pruefungsortId}"></td>
-        <td th:text="${o.stadt}"></td>
-        <td th:text="${o.adresse}"></td>
-        <td th:text="${o.datum}"></td>
-        <td th:text="${o.modulFach}"></td>
-        <td th:text="${o.sitzplaetze}"></td>
-        <td th:text="${o.belegtePlaetze}"></td>
-        <td th:text="${o.freiePlaetze}"></td>
-        <td>
-            <form th:if="${o.anmeldbar}" th:action="@{/pruefungsorte/anmelden}" method="post" style="margin:0;">
-                <input type="hidden" name="pruefungsortId" th:value="${o.pruefungsortId}" />
-                <input type="hidden" name="datum" th:value="${o.datum}" />
-                <button type="submit">Anmelden</button>
-            </form>
-            <span th:unless="${o.anmeldbar}" style="color:gray;">Nicht zugelassen oder bereits angemeldet</span>
-        </td>
-    </tr>
-    <tr th:if="${#lists.isEmpty(orte)}">
-        <td colspan="8">Keine Ergebnisse gefunden.</td>
-    </tr>
-</table>
 </body>
 </html>

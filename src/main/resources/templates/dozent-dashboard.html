@@ -1,22 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head><title>Dozent-Dashboard</title></head>
+<head>
+  <meta charset="UTF-8">
+  <title>Dozent-Dashboard</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
 <body>
-<h1>Willkommen, <span th:text="${dozent.vorname}">Name</span></h1>
-<a href="/pruefungsorte">Prüfungsorte suchen & filtern</a>
-<p>
-  <a href="/pruefer/meine-pruefungen" style="padding:5px 10px; border:1px solid #888; border-radius:4px; background:#eee; text-decoration:none;">
-    Meine Prüfungen
-  </a>
-</p>
-<table>
-  <thead><tr><th>Prüfungsort-ID</th><th>Stadt</th></tr></thead>
-  <tbody th:each="ort : ${orte}">
-  <tr>
-    <td th:text="${ort.id}">ID</td>
-    <td th:text="${ort.stadt}">Stadt</td>
-  </tr>
-  </tbody>
-</table>
+<div class="container" style="max-width:900px;margin:50px auto;background:#f9f9f9;padding:30px 40px;border-radius:12px;box-shadow:0 2px 12px #d0d0d0;">
+  <h1>Willkommen, <span th:text="${dozent.vorname}">Name</span></h1>
+  <nav style="margin-bottom: 32px;">
+    <a class="button" href="/pruefungsorte" style="margin-right:15px;">Prüfungsorte suchen & filtern</a>
+    <a class="button" href="/pruefer/meine-pruefungen">Meine Prüfungen</a>
+  </nav>
+  <h2>Ihre Prüfungsorte</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>Prüfungsort-ID</th>
+      <th>Stadt</th>
+    </tr>
+    </thead>
+    <tbody th:each="ort : ${orte}">
+    <tr>
+      <td th:text="${ort.id}">ID</td>
+      <td th:text="${ort.stadt}">Stadt</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
 </body>
 </html>

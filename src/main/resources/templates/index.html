@@ -3,26 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <title>Alle Module</title>
-    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-<div class="container">
-    <h1 class="mt-5">Alle Module</h1>
-    <table class="table table-striped mt-3">
+<div class="container" style="max-width:900px;margin:50px auto;background:#f9f9f9;padding:30px 40px;border-radius:12px;box-shadow:0 2px 12px #d0d0d0;">
+    <h1 style="margin-bottom:30px;">Alle Module</h1>
+    <table style="width:100%;border-collapse:collapse;">
         <thead>
-        <tr>
-            <th>ID</th>
-            <th>Fach</th>
-            <th>Semester</th>
-            <th>ECTS</th>
+        <tr style="background:#2878c7;color:#fff;">
+            <th style="padding:10px;">ID</th>
+            <th style="padding:10px;">Fach</th>
+            <th style="padding:10px;">Semester</th>
+            <th style="padding:10px;">ECTS</th>
         </tr>
         </thead>
         <tbody th:each="m : ${module}">
-        <tr>
-            <td th:text="${m.id}">ID</td>
-            <td th:text="${m.fach}">Fach</td>
-            <td th:text="${m.semester}">Semester</td>
-            <td th:text="${m.verfuegbareEcts}">ECTS</td>
+        <tr style="border-bottom:1px solid #e0e0e0;">
+            <td th:text="${m.id}" style="padding:10px;">ID</td>
+            <td th:text="${m.fach}" style="padding:10px;">Fach</td>
+            <td th:text="${m.semester}" style="padding:10px;">Semester</td>
+            <td th:text="${m.verfuegbareEcts}" style="padding:10px;">ECTS</td>
         </tr>
         </tbody>
     </table>
