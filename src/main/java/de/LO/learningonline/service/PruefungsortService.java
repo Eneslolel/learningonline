@@ -40,29 +40,43 @@ public class PruefungsortService {
         this.pruefungRepo = pruefungRepo;
     }
 
-    public List<PruefungsortAnzeigeDto> sucheOrte(Long modulId, String ort, LocalDate datum) {
+    public List<PruefungsortAnzeigeDto> sucheOrte(Long modulId, String ort, LocalDate datum, Long matrikelnr) {
         List<Object[]> rows = ortRepo.findFilteredOrte(modulId, ort, datum);
         List<PruefungsortAnzeigeDto> result = new ArrayList<>();
         for (Object[] r : rows) {
+            Long pruefungsortId = ((Number) r[0]).longValue();
+            String stadt = (String) r[1];
+            String adresse = (String) r[2];
+            LocalDate dat = (r[3] != null)
+                    ? (r[3] instanceof java.sql.Timestamp)
+                    ? ((java.sql.Timestamp) r[3]).toLocalDateTime().toLocalDate()
+                    : ((r[3] instanceof java.sql.Date) ? ((java.sql.Date) r[3]).toLocalDate() : null)
+                    : null;
+            int sitzplaetze = ((Number) r[4]).intValue();
+            int belegtePlaetze = ((Number) r[5]).intValue();
+            int freiePlaetze = ((Number) r[6]).intValue();
+            Long pruefungId = ((Number) r[7]).longValue();
+
+            boolean anmeldbar = false;
+
+            // --- Neue Logik: Nur wenn (a) zugelassen, (b) noch nicht angemeldet ---
+            if (matrikelnr != null && pruefungId != null) {
+                // (1) Existiert Eintrag: Zugelassen = 'Y' (also angemeldet & zugelassen)
+                boolean schonAngemeldet = geschriebenRepo.existsByStudentMatrikelnrAndPruefungIdAndZugelassen(matrikelnr, pruefungId, "Y");
+                // (2) Existiert Eintrag: Zugelassen = 'N' (abgelehnt)
+                boolean abgelehnt = geschriebenRepo.existsByStudentMatrikelnrAndPruefungIdAndZugelassen(matrikelnr, pruefungId, "N");
+                // (3) Existiert Eintrag: Zulassung = 'Y', aber noch keine Anmeldung? → in deinem Modell: nicht möglich, das ist identisch.
+                // Ergo: ANMELDBAR, wenn es KEINEN Datensatz mit Y und KEINEN mit N gibt!
+                anmeldbar = !schonAngemeldet && !abgelehnt;
+            }
+
             result.add(new PruefungsortAnzeigeDto(
-                    ((Number) r[0]).longValue(),
-                    (String) r[1],
-                    (String) r[2],
-                    (r[3] != null)
-                            ? ((r[3] instanceof java.sql.Timestamp)
-                            ? ((java.sql.Timestamp) r[3]).toLocalDateTime().toLocalDate()
-                            : ((r[3] instanceof java.sql.Date)
-                            ? ((java.sql.Date) r[3]).toLocalDate()
-                            : null)
-                    )
-                            : null,
-                    ((Number) r[4]).intValue(),
-                    ((Number) r[5]).intValue(),
-                    ((Number) r[6]).intValue()
+                    pruefungsortId, stadt, adresse, dat, sitzplaetze, belegtePlaetze, freiePlaetze, anmeldbar
             ));
         }
         return result;
     }
+
     public AnmeldungErgebnisDto studentAnmelden(String studentMail, Long pruefungsortId, LocalDate datum) {
         Student student = studentRepo.findByEmail(studentMail).orElse(null);
         if (student == null) return new AnmeldungErgebnisDto(false, "Student nicht gefunden!");
@@ -120,4 +134,5 @@ public class PruefungsortService {
         }
         return null;
     }
+
 }

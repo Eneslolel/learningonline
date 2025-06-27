@@ -2,7 +2,9 @@ package de.LO.learningonline.controller;
 
 import de.LO.learningonline.dto.PruefungsortAnzeigeDto;
 import de.LO.learningonline.model.Modul;
+import de.LO.learningonline.model.Student;
 import de.LO.learningonline.repository.ModulRepository;
+import de.LO.learningonline.repository.StudentRepository;
 import de.LO.learningonline.service.PruefungsortService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,35 +24,25 @@ public class PruefungsortController {
 
     private final PruefungsortService ortService;
     private final ModulRepository modulRepo;
+    private final StudentRepository studentRepo;
 
-    public PruefungsortController(PruefungsortService ortService, ModulRepository modulRepo) {
+    public PruefungsortController(
+            PruefungsortService ortService,
+            ModulRepository modulRepo,
+            StudentRepository studentRepo
+    ) {
         this.ortService = ortService;
         this.modulRepo = modulRepo;
+        this.studentRepo = studentRepo;
     }
 
-    @GetMapping("/pruefungsorte")
-    public String suche(
-            @RequestParam(required = false) Long modulId,
-            @RequestParam(required = false) String ort,
-            @RequestParam(required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate datum,
-            Model model) {
-
-        List<Modul> module = modulRepo.findAll();
-        List<PruefungsortAnzeigeDto> orte = ortService.sucheOrte(modulId, ort, datum);
-
-        model.addAttribute("module", module);
-        model.addAttribute("orte", orte);
-
-        return "pruefungsorte"; // Thymeleaf-Template
-    }
     @PostMapping("/pruefungsorte/anmelden")
     public String anmelden(
             @RequestParam Long pruefungsortId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate datum,
             @AuthenticationPrincipal UserDetails user,
-            RedirectAttributes redirectAttrs) {
-
+            RedirectAttributes redirectAttrs
+    ) {
         String email = user.getUsername();
         String rolle = user.getAuthorities().stream()
                 .anyMatch(a -> a.getAuthority().equals("ROLE_DOZENT")) ? "DOZENT" : "STUDENT";
@@ -72,5 +64,34 @@ public class PruefungsortController {
         redirectAttrs.addFlashAttribute("success", success);
 
         return "redirect:/pruefungsorte";
+    }
+
+    @GetMapping("/pruefungsorte")
+    public String suche(
+            @RequestParam(required = false) Long modulId,
+            @RequestParam(required = false) String ort,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate datum,
+            Model model,
+            @AuthenticationPrincipal UserDetails user
+    ) {
+        List<Modul> module = modulRepo.findAll();
+        Long matrikelnr = null;
+
+        // Falls ein Student eingeloggt ist, seine Matrikelnummer ermitteln
+        if (user != null) {
+            Student student = studentRepo.findByEmail(user.getUsername()).orElse(null);
+            if (student != null) {
+                matrikelnr = student.getMatrikelnr();
+            }
+        }
+
+        // matrikelnr kann auch null sein, dann wird einfach "anmeldbar" false sein für alle
+        List<PruefungsortAnzeigeDto> orte = ortService.sucheOrte(modulId, ort, datum, matrikelnr);
+
+        model.addAttribute("module", module);
+        model.addAttribute("orte", orte);
+
+        return "pruefungsorte";
     }
 }

@@ -10,6 +10,7 @@ public class PruefungsortAnzeigeDto {
     private int sitzplaetze;
     private int belegtePlaetze;
     private int freiePlaetze;
+    private boolean anmeldbar;
 
     public Long getPruefungsortId() {
         return pruefungsortId;
@@ -17,6 +18,14 @@ public class PruefungsortAnzeigeDto {
 
     public void setPruefungsortId(Long pruefungsortId) {
         this.pruefungsortId = pruefungsortId;
+    }
+
+    public boolean isAnmeldbar() {
+        return anmeldbar;
+    }
+
+    public void setAnmeldbar(boolean anmeldbar) {
+        this.anmeldbar = anmeldbar;
     }
 
     public String getStadt() {
@@ -68,7 +77,7 @@ public class PruefungsortAnzeigeDto {
     }
 
     public PruefungsortAnzeigeDto(Long pruefungsortId, String stadt, String adresse, LocalDate datum,
-                                  int sitzplaetze, int belegtePlaetze, int freiePlaetze) {
+                                  int sitzplaetze, int belegtePlaetze, int freiePlaetze, boolean anmeldbar) {
         this.pruefungsortId = pruefungsortId;
         this.stadt = stadt;
         this.adresse = adresse;
@@ -76,6 +85,7 @@ public class PruefungsortAnzeigeDto {
         this.sitzplaetze = sitzplaetze;
         this.belegtePlaetze = belegtePlaetze;
         this.freiePlaetze = freiePlaetze;
+        this.anmeldbar = anmeldbar;
     }
 
 }

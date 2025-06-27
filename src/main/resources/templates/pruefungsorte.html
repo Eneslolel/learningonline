@@ -52,11 +52,12 @@
         <td th:text="${o.belegtePlaetze}"></td>
         <td th:text="${o.freiePlaetze}"></td>
         <td>
-            <form th:action="@{/pruefungsorte/anmelden}" method="post" style="margin:0;">
+            <form th:if="${o.anmeldbar}" th:action="@{/pruefungsorte/anmelden}" method="post" style="margin:0;">
                 <input type="hidden" name="pruefungsortId" th:value="${o.pruefungsortId}" />
                 <input type="hidden" name="datum" th:value="${o.datum}" />
                 <button type="submit">Anmelden</button>
             </form>
+            <span th:unless="${o.anmeldbar}" style="color:gray;">Nicht zugelassen oder bereits angemeldet</span>
         </td>
     </tr>
     <tr th:if="${#lists.isEmpty(orte)}">

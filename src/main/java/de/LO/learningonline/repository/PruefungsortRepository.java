@@ -23,7 +23,8 @@ public interface PruefungsortRepository extends JpaRepository<Pruefungsort, Long
         pr.DATUM,
         o.SITZPLAETZE,
         COUNT(g.STUDENT_MATRIKEL_NR) AS BELEGTE,
-        (o.SITZPLAETZE - COUNT(g.STUDENT_MATRIKEL_NR)) AS FREIE
+        (o.SITZPLAETZE - COUNT(g.STUDENT_MATRIKEL_NR)) AS FREIE,
+        pr.ID AS PRUEFUNG_ID -- NEU!
     FROM 
         PRUEFUNGSORT o
         JOIN VERANSTALTET v ON v.PRUEFUNGSORT_ID = o.ID
@@ -34,7 +35,7 @@ public interface PruefungsortRepository extends JpaRepository<Pruefungsort, Long
         AND (:ort IS NULL OR LOWER(o.STADT) LIKE LOWER('%' || :ort || '%'))
         AND (:datum IS NULL OR pr.DATUM = :datum)
     GROUP BY 
-        o.ID, o.STADT, o.ADRESSE, pr.DATUM, o.SITZPLAETZE
+        o.ID, o.STADT, o.ADRESSE, pr.DATUM, o.SITZPLAETZE, pr.ID
     """, nativeQuery = true)
     List<Object[]> findFilteredOrte(
             @Param("modulId") Long modulId,
