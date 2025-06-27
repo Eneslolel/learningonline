@@ -106,3 +106,22 @@ span.text-secondary {
     .table th, .table td { padding: 6px 5px; font-size: 0.98em; }
     h1 { font-size: 1.6em; }
 }
+
+.button {
+    background: #2878c7;
+    color: #fff !important;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.15s;
+    cursor: pointer;
+    margin-right: 8px;
+}
+.button:last-child {
+    margin-right: 0;
+}
+.button:hover {
+    background: #145399;
+}
