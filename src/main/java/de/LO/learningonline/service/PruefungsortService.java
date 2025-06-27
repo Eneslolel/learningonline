@@ -56,22 +56,17 @@ public class PruefungsortService {
             int belegtePlaetze = ((Number) r[5]).intValue();
             int freiePlaetze = ((Number) r[6]).intValue();
             Long pruefungId = ((Number) r[7]).longValue();
+            String modulFach = (String) r[8]; // <--- NEU
 
             boolean anmeldbar = false;
-
-            // --- Neue Logik: Nur wenn (a) zugelassen, (b) noch nicht angemeldet ---
             if (matrikelnr != null && pruefungId != null) {
-                // (1) Existiert Eintrag: Zugelassen = 'Y' (also angemeldet & zugelassen)
                 boolean schonAngemeldet = geschriebenRepo.existsByStudentMatrikelnrAndPruefungIdAndZugelassen(matrikelnr, pruefungId, "Y");
-                // (2) Existiert Eintrag: Zugelassen = 'N' (abgelehnt)
                 boolean abgelehnt = geschriebenRepo.existsByStudentMatrikelnrAndPruefungIdAndZugelassen(matrikelnr, pruefungId, "N");
-                // (3) Existiert Eintrag: Zulassung = 'Y', aber noch keine Anmeldung? → in deinem Modell: nicht möglich, das ist identisch.
-                // Ergo: ANMELDBAR, wenn es KEINEN Datensatz mit Y und KEINEN mit N gibt!
                 anmeldbar = !schonAngemeldet && !abgelehnt;
             }
 
             result.add(new PruefungsortAnzeigeDto(
-                    pruefungsortId, stadt, adresse, dat, sitzplaetze, belegtePlaetze, freiePlaetze, anmeldbar
+                    pruefungsortId, stadt, adresse, dat, sitzplaetze, belegtePlaetze, freiePlaetze, anmeldbar, modulFach
             ));
         }
         return result;

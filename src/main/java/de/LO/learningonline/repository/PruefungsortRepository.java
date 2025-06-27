@@ -16,27 +16,29 @@ public interface PruefungsortRepository extends JpaRepository<Pruefungsort, Long
     // für Dozenten/Prüfer: alle Prüfungen, die dieser prüft
     List<Pruefungsort> findByPrueferId(Long prueferId);
     @Query(value = """
-    SELECT 
-        o.ID AS PRUEFUNGSORT_ID,
-        o.STADT,
-        o.ADRESSE,
-        pr.DATUM,
-        o.SITZPLAETZE,
-        COUNT(g.STUDENT_MATRIKEL_NR) AS BELEGTE,
-        (o.SITZPLAETZE - COUNT(g.STUDENT_MATRIKEL_NR)) AS FREIE,
-        pr.ID AS PRUEFUNG_ID -- NEU!
-    FROM 
-        PRUEFUNGSORT o
-        JOIN VERANSTALTET v ON v.PRUEFUNGSORT_ID = o.ID
-        JOIN PRUEFUNG pr ON pr.ID = v.PRUEFUNG_ID
-        LEFT JOIN GESCHRIEBEN g ON g.PRUEFUNG_ID = pr.ID
-    WHERE 
-        (:modulId IS NULL OR pr.MODUL_ID = :modulId)
-        AND (:ort IS NULL OR LOWER(o.STADT) LIKE LOWER('%' || :ort || '%'))
-        AND (:datum IS NULL OR pr.DATUM = :datum)
-    GROUP BY 
-        o.ID, o.STADT, o.ADRESSE, pr.DATUM, o.SITZPLAETZE, pr.ID
-    """, nativeQuery = true)
+SELECT 
+    o.ID AS PRUEFUNGSORT_ID,
+    o.STADT,
+    o.ADRESSE,
+    pr.DATUM,
+    o.SITZPLAETZE,
+    COUNT(g.STUDENT_MATRIKEL_NR) AS BELEGTE,
+    (o.SITZPLAETZE - COUNT(g.STUDENT_MATRIKEL_NR)) AS FREIE,
+    pr.ID AS PRUEFUNG_ID,
+    m.FACH AS MODUL_FACH        
+FROM 
+    PRUEFUNGSORT o
+    JOIN VERANSTALTET v ON v.PRUEFUNGSORT_ID = o.ID
+    JOIN PRUEFUNG pr ON pr.ID = v.PRUEFUNG_ID
+    JOIN MODUL m ON m.ID = pr.MODUL_ID        -- <--- NEU
+    LEFT JOIN GESCHRIEBEN g ON g.PRUEFUNG_ID = pr.ID
+WHERE 
+    (:modulId IS NULL OR pr.MODUL_ID = :modulId)
+    AND (:ort IS NULL OR LOWER(o.STADT) LIKE LOWER('%' || :ort || '%'))
+    AND (:datum IS NULL OR pr.DATUM = :datum)
+GROUP BY 
+    o.ID, o.STADT, o.ADRESSE, pr.DATUM, o.SITZPLAETZE, pr.ID, m.FACH
+""", nativeQuery = true)
     List<Object[]> findFilteredOrte(
             @Param("modulId") Long modulId,
             @Param("ort") String ort,

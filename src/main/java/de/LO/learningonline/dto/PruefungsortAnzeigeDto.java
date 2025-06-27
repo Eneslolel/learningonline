@@ -11,6 +11,7 @@ public class PruefungsortAnzeigeDto {
     private int belegtePlaetze;
     private int freiePlaetze;
     private boolean anmeldbar;
+    private String modulFach;
 
     public Long getPruefungsortId() {
         return pruefungsortId;
@@ -30,6 +31,14 @@ public class PruefungsortAnzeigeDto {
 
     public String getStadt() {
         return stadt;
+    }
+
+    public String getModulFach() {
+        return modulFach;
+    }
+
+    public void setModulFach(String modulFach) {
+        this.modulFach = modulFach;
     }
 
     public void setStadt(String stadt) {
@@ -77,7 +86,7 @@ public class PruefungsortAnzeigeDto {
     }
 
     public PruefungsortAnzeigeDto(Long pruefungsortId, String stadt, String adresse, LocalDate datum,
-                                  int sitzplaetze, int belegtePlaetze, int freiePlaetze, boolean anmeldbar) {
+                                  int sitzplaetze, int belegtePlaetze, int freiePlaetze, boolean anmeldbar, String modulFach) {
         this.pruefungsortId = pruefungsortId;
         this.stadt = stadt;
         this.adresse = adresse;
@@ -86,6 +95,7 @@ public class PruefungsortAnzeigeDto {
         this.belegtePlaetze = belegtePlaetze;
         this.freiePlaetze = freiePlaetze;
         this.anmeldbar = anmeldbar;
+        this.modulFach = modulFach;
     }
 
 }
