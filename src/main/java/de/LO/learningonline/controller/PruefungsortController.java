@@ -3,8 +3,10 @@ package de.LO.learningonline.controller;
 import de.LO.learningonline.dto.PruefungsortAnzeigeDto;
 import de.LO.learningonline.model.Modul;
 import de.LO.learningonline.model.Student;
+import de.LO.learningonline.model.Dozent;
 import de.LO.learningonline.repository.ModulRepository;
 import de.LO.learningonline.repository.StudentRepository;
+import de.LO.learningonline.repository.DozentRepository;
 import de.LO.learningonline.service.PruefungsortService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,15 +27,18 @@ public class PruefungsortController {
     private final PruefungsortService ortService;
     private final ModulRepository modulRepo;
     private final StudentRepository studentRepo;
+    private final DozentRepository dozentRepo;
 
     public PruefungsortController(
             PruefungsortService ortService,
             ModulRepository modulRepo,
-            StudentRepository studentRepo
+            StudentRepository studentRepo,
+            DozentRepository dozentRepo
     ) {
         this.ortService = ortService;
         this.modulRepo = modulRepo;
         this.studentRepo = studentRepo;
+        this.dozentRepo = dozentRepo;
     }
 
     @PostMapping("/pruefungsorte/anmelden")
@@ -77,17 +82,26 @@ public class PruefungsortController {
     ) {
         List<Modul> module = modulRepo.findAll();
         Long matrikelnr = null;
+        Long prueferId = null;
 
-        // Falls ein Student eingeloggt ist, seine Matrikelnummer ermitteln
         if (user != null) {
-            Student student = studentRepo.findByEmail(user.getUsername()).orElse(null);
-            if (student != null) {
-                matrikelnr = student.getMatrikelnr();
+            boolean isDozent = user.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_DOZENT"));
+            if (isDozent) {
+                Dozent dozent = dozentRepo.findByEmail(user.getUsername()).orElse(null);
+                if (dozent != null) {
+                    prueferId = dozent.getPrueferId(); // Oder ggf. dozent.getId(), je nach Modell
+                }
+            } else {
+                Student student = studentRepo.findByEmail(user.getUsername()).orElse(null);
+                if (student != null) {
+                    matrikelnr = student.getMatrikelnr();
+                }
             }
         }
 
-        // matrikelnr kann auch null sein, dann wird einfach "anmeldbar" false sein für alle
-        List<PruefungsortAnzeigeDto> orte = ortService.sucheOrte(modulId, ort, datum, matrikelnr);
+        // matrikelnr und prueferId können auch null sein – dann ist niemand angemeldet
+        List<PruefungsortAnzeigeDto> orte = ortService.sucheOrte(modulId, ort, datum, matrikelnr, prueferId);
 
         model.addAttribute("module", module);
         model.addAttribute("orte", orte);

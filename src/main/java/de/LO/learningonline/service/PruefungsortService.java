@@ -40,7 +40,8 @@ public class PruefungsortService {
         this.pruefungRepo = pruefungRepo;
     }
 
-    public List<PruefungsortAnzeigeDto> sucheOrte(Long modulId, String ort, LocalDate datum, Long matrikelnr) {
+    public List<PruefungsortAnzeigeDto> sucheOrte(Long modulId, String ort, LocalDate datum, Long matrikelnr, Long prueferId)
+    {
         List<Object[]> rows = ortRepo.findFilteredOrte(modulId, ort, datum);
         List<PruefungsortAnzeigeDto> result = new ArrayList<>();
         for (Object[] r : rows) {
@@ -63,6 +64,12 @@ public class PruefungsortService {
                 boolean schonAngemeldet = geschriebenRepo.existsByStudentMatrikelnrAndPruefungIdAndZugelassen(matrikelnr, pruefungId, "Y");
                 boolean abgelehnt = geschriebenRepo.existsByStudentMatrikelnrAndPruefungIdAndZugelassen(matrikelnr, pruefungId, "N");
                 anmeldbar = !schonAngemeldet && !abgelehnt;
+            }else if (prueferId != null) {
+                // Prüfer darf sich anmelden, wenn er noch nicht für diesen Ort eingetragen ist
+                boolean schonAngemeldet = prueftRepo.existsByPrueferIdAndPruefungsortId(prueferId, pruefungsortId);
+                // max 3 Prüfer pro Ort:
+                int belegtePruefer = prueftRepo.countByPruefungsortId(pruefungsortId);
+                anmeldbar = !schonAngemeldet && belegtePruefer < 3;
             }
 
             result.add(new PruefungsortAnzeigeDto(

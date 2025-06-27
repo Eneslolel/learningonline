@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Meine Aufsichtsprüfungen</title>
+</head>
+<body>
+<h1>Meine Aufsichtsprüfungen</h1>
+<table>
+    <tr>
+        <th>Ort</th>
+        <th>Stadt</th>
+        <th>Aktion</th>
+    </tr>
+    <tr th:each="o : ${orte}">
+        <td th:text="${o.adresse}"></td>
+        <td th:text="${o.stadt}"></td>
+        <td>
+            <form th:action="@{/pruefer/abmelden}" method="post" style="margin:0;">
+                <input type="hidden" name="pruefungsortId" th:value="${o.id}" />
+                <button type="submit">Abmelden</button>
+            </form>
+        </td>
+    </tr>
+    <tr th:if="${#lists.isEmpty(orte)}">
+        <td colspan="3">Keine Aufsichtsprüfungen angemeldet.</td>
+    </tr>
+</table>
+</body>
+</html>
